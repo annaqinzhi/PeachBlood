@@ -5,16 +5,16 @@ using UnityEngine;
 public class GreenTree : MonoBehaviour {
 
     public GameObject player;
-    public float allowDistance = 1f;
+    public float allowDistance = 1.5f;
 
 
    
-    public bool isEaten;
+    public bool TreeProtected;
 
 
     private void FixedUpdate()
     {
-        if (isEaten)
+        if (TreeProtected)
         {
             Vector3 direction = transform.position - player.transform.position;
             transform.position = player.transform.position + direction.normalized*allowDistance;
@@ -27,7 +27,7 @@ public class GreenTree : MonoBehaviour {
     {
         if (cl.gameObject == player)
         {
-            isEaten = true;
+            TreeProtected = true;
             Debug.Log("Tree has been eaten!");
         }
     }

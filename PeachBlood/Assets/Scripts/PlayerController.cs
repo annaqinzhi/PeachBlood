@@ -12,7 +12,8 @@ public class PlayerController : MonoBehaviour {
     public Vector2 playerStartPos;
     public Vector2 playerNewPos;
     public bool directionChosen;
-    public Vector2 treePos;
+    public GreenTree tree;
+ 
 
 
     float moveSpeed=2f;
@@ -83,6 +84,30 @@ public class PlayerController : MonoBehaviour {
             Debug.Log("Scale added!");
             Invoke("returnToOriginalScale", 6);
         } 
+
+        if(cl.gameObject.GetComponent<SpriteRenderer>().sprite==gameObject.GetComponent<SpriteRenderer>().sprite)
+        {
+            if(cl.gameObject.GetComponent<Transform>().localScale.magnitude
+                                < gameObject.transform.localScale.magnitude)
+            {
+                Destroy(cl.gameObject);
+                Debug.Log("smaller has been eaten!");
+            }
+
+            if (cl.gameObject.GetComponent<Transform>().localScale.magnitude
+                              > gameObject.transform.localScale.magnitude)
+            { if(tree.TreeProtected)
+                {
+                    Destroy(tree.gameObject);
+                    tree.TreeProtected = false;
+                } else 
+                 {
+                    Destroy(gameObject);
+                    Debug.Log("player is dead! Game over!");
+                 }
+                
+            }
+        }
 
     }
 
