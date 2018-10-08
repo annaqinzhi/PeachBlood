@@ -13,9 +13,8 @@ public class PlayerController : MonoBehaviour {
     public Vector2 playerNewPos;
     public bool directionChosen;
     public GreenTree tree;
- 
 
-
+    List<GameObject> trees=new List<GameObject>();
     float moveSpeed=2f;
 
 
@@ -83,9 +82,14 @@ public class PlayerController : MonoBehaviour {
             gameObject.transform.localScale +=new Vector3(0.8f,0.8f,0.8f) ;
             Debug.Log("Scale added!");
             Invoke("returnToOriginalScale", 6);
-        } 
+        }
+        else if (cl.tag == "Tree")
+        {
+            trees.Add(cl.gameObject);
+            Debug.Log("treescount is " + trees.Count);
+        }
 
-        if(cl.gameObject.GetComponent<SpriteRenderer>().sprite==gameObject.GetComponent<SpriteRenderer>().sprite)
+        if (cl.gameObject.GetComponent<SpriteRenderer>().sprite==gameObject.GetComponent<SpriteRenderer>().sprite)
         {
             if(cl.gameObject.GetComponent<Transform>().localScale.magnitude
                                 < gameObject.transform.localScale.magnitude)
@@ -98,13 +102,20 @@ public class PlayerController : MonoBehaviour {
                               > gameObject.transform.localScale.magnitude)
             { if(tree.TreeProtected)
                 {
-                    Destroy(tree.gameObject);
-                    tree.TreeProtected = false;
+                    Destroy(trees[trees.Count-1]);
+                    trees.Remove(trees[trees.Count-1]);
+                    Debug.Log("One tree destroied!");
+
+                    if(trees.Count==0)
+                    {
+                      tree.TreeProtected = false;
+                        Debug.Log("No tree protected!");
+                    }
                 } else 
-                 {
-                    Destroy(gameObject);
-                    Debug.Log("player is dead! Game over!");
-                 }
+                    {
+                      Destroy(gameObject);
+                      Debug.Log("player is dead! Game over!");
+                    }
                 
             }
         }
