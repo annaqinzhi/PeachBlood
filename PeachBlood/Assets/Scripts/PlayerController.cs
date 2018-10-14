@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class PlayerController : MonoBehaviour {
 
@@ -13,8 +15,13 @@ public class PlayerController : MonoBehaviour {
     public Vector2 playerNewPos;
     public bool directionChosen;
     public GreenTree tree;
+    public Text pointsText;
 
-    List<GameObject> trees=new List<GameObject>();
+
+    private List<GameObject> trees = new List<GameObject>();
+
+
+    int point = 0;
     float moveSpeed=2f;
 
 
@@ -22,9 +29,8 @@ public class PlayerController : MonoBehaviour {
     {
         rd = GetComponent<Rigidbody2D>();
         playerStartPos = rd.position;
+        pointsText.text = "0";
      
-
-
 	}
 	
 	
@@ -83,6 +89,11 @@ public class PlayerController : MonoBehaviour {
             Debug.Log("Scale added!");
             Invoke("returnToOriginalScale", 6);
         }
+        else if (cl.tag == "Coint")
+        {
+            addPoints();
+            Debug.Log("Points added!");
+        }
         else if (cl.tag == "Tree")
         {
             trees.Add(cl.gameObject);
@@ -127,5 +138,12 @@ public class PlayerController : MonoBehaviour {
         gameObject.transform.localScale -= new Vector3(0.8f, 0.8f, 0.8f);
     }
 
+    void addPoints()
+    {
+        point += 5;
+        pointsText.text = point.ToString();
+
+       
+    }
 
 }
