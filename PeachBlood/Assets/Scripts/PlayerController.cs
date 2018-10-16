@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
     public Vector2 direction;
     public Vector2 playerStartPos;
     public Vector2 playerNewPos;
+    public float moveSpeed = 3f;
     public bool directionChosen;
     public GreenTree tree;
     public Text pointsText;
@@ -23,7 +24,6 @@ public class PlayerController : MonoBehaviour {
 
 
     static int point = 0;
-    float moveSpeed=2f;
     Vector3 maxLocalscale;
     float maxLocalscaleMagnitude;
     Color originColor = new Color32(78, 132, 123, 0);

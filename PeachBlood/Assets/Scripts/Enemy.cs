@@ -5,12 +5,13 @@ using UnityEngine;
 public class Enemy : MonoBehaviour {
 
     public float moveSpeed = 1f;
+    public float dangerousDistance = 5f;
 
     GameObject player;
     private Vector2 randomDirection;
     private Vector2 moveDirection;
     private float chractorVelocity=3f;
-    private float directionChangeTime = 3f;
+    private float directionChangeTime = 5f;
     private float moveLastTime;
  
 
@@ -43,6 +44,15 @@ public class Enemy : MonoBehaviour {
                                               transform.position.y + (moveDirection.y * Time.deltaTime));
         //transform.position = newPosition;
         transform.position = Vector3.MoveTowards(transform.position, newPosition,moveSpeed*Time.deltaTime);
+
+        if(transform.localScale.magnitude > player.transform.localScale.magnitude)
+        {
+            if(Vector2.Distance(transform.position,player.transform.position) < dangerousDistance)
+            {
+                transform.position = 
+                    Vector2.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
+            }
+        }
 
     }
 

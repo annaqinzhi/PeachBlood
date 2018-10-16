@@ -18,10 +18,8 @@ public class ChangeScene : MonoBehaviour {
         if (cl.gameObject.name == "Player")
         {
             particle.Play();
-            Camera.main.backgroundColor = newColor;
-            particle.Stop();
 
-            Invoke("destroyObject", 1f);
+            Invoke("destroyObject", 0.5f);
 
             Debug.Log("Scene is changed!");
         }
@@ -29,7 +27,9 @@ public class ChangeScene : MonoBehaviour {
 
     void destroyObject()
     {
-       Destroy(gameObject);
+        particle.Stop();
+        Camera.main.backgroundColor = newColor;
+        Destroy(gameObject);
     }
 
 }
