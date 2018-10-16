@@ -16,13 +16,17 @@ public class PlayerController : MonoBehaviour {
     public bool directionChosen;
     public GreenTree tree;
     public Text pointsText;
+    public bool gameOver;
+
+    [HideInInspector]
+    public List<GameObject> trees = new List<GameObject>();
 
 
-    private List<GameObject> trees = new List<GameObject>();
-
-
-    int point = 0;
+    static int point = 0;
     float moveSpeed=2f;
+    Vector3 maxLocalscale;
+    float maxLocalscaleMagnitude;
+    Color originColor = new Color32(78, 132, 123, 0);
 
 
     void Start () 
@@ -30,6 +34,9 @@ public class PlayerController : MonoBehaviour {
         rd = GetComponent<Rigidbody2D>();
         playerStartPos = rd.position;
         pointsText.text = "0";
+
+        maxLocalscale = new Vector3(1.6f, 1.6f, 1.6f);
+        maxLocalscaleMagnitude = maxLocalscale.magnitude;
      
 	}
 	
@@ -59,7 +66,6 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-
 	}
 
     private void FixedUpdate()
@@ -69,8 +75,6 @@ public class PlayerController : MonoBehaviour {
             playerNewPos = playerStartPos + direction.normalized * moveSpeed * Time.fixedDeltaTime;
             rd.position = playerNewPos;
             playerStartPos = rd.position;
-
-
         } 
 
     }
@@ -81,6 +85,7 @@ public class PlayerController : MonoBehaviour {
         {
             moveSpeed += 2f;
             Debug.Log("moveSpeed added!");
+            Invoke("returnToOriginalMoveSpeed", 6);
         } 
 
         else if (cl.tag =="BlueMushroom")
@@ -91,7 +96,7 @@ public class PlayerController : MonoBehaviour {
         }
         else if (cl.tag == "Coint")
         {
-            addPoints();
+            addPointsEatenCoint();
             Debug.Log("Points added!");
         }
         else if (cl.tag == "Tree")
@@ -99,14 +104,24 @@ public class PlayerController : MonoBehaviour {
             trees.Add(cl.gameObject);
             Debug.Log("treescount is " + trees.Count);
         }
-
-        if (cl.gameObject.GetComponent<SpriteRenderer>().sprite==gameObject.GetComponent<SpriteRenderer>().sprite)
+        else if (cl.tag == "ChangeScene")
+        {
+            Invoke("changeColorBack", 5f);
+        }
+        else if (cl.gameObject.GetComponent<SpriteRenderer>().sprite==gameObject.GetComponent<SpriteRenderer>().sprite)
         {
             if(cl.gameObject.GetComponent<Transform>().localScale.magnitude
                                 < gameObject.transform.localScale.magnitude)
             {
-                Destroy(cl.gameObject);
+                cl.gameObject.SetActive(false);
+                gameObject.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+                addPointsEatenEnemy();
                 Debug.Log("smaller has been eaten!");
+
+                if(gameObject.transform.localScale.magnitude > maxLocalscaleMagnitude)
+                {
+                  gameObject.transform.localScale = new Vector3(1.6f, 1.6f, 1.6f);
+                }
             }
 
             if (cl.gameObject.GetComponent<Transform>().localScale.magnitude
@@ -120,15 +135,14 @@ public class PlayerController : MonoBehaviour {
                     if(trees.Count==0)
                     {
                       tree.TreeProtected = false;
-                        Debug.Log("No tree protected!");
+                      Debug.Log("No tree protected!");
                     }
                 } else 
                     {
-                      Destroy(gameObject);
+                      gameOver = true;
                       Debug.Log("player is dead! Game over!");
                     }
-                
-            }
+             }
         }
 
     }
@@ -138,12 +152,27 @@ public class PlayerController : MonoBehaviour {
         gameObject.transform.localScale -= new Vector3(0.8f, 0.8f, 0.8f);
     }
 
-    void addPoints()
+    void returnToOriginalMoveSpeed()
+    {
+        moveSpeed -= 2f;
+    }
+
+    void changeColorBack()
+    {
+        Camera.main.backgroundColor = originColor;
+    }
+
+    void addPointsEatenCoint()
     {
         point += 5;
         pointsText.text = point.ToString();
-
-       
     }
+
+    void addPointsEatenEnemy()
+    {
+        point += 1;
+        pointsText.text = point.ToString();
+    }
+
 
 }
