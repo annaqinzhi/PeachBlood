@@ -5,11 +5,12 @@ using UnityEngine;
 public class EnemySprawner : MonoBehaviour {
 
     public GameObject enemyPrefab;
-    public PlayerController playerController;
+    public GameManager gameManager;
     public GameObject player;
+    public float waitTime = 3f;
 
     Vector2 sprawnPos;
-    float waitTime = 2f;
+   
 
 
 	void Start () {
@@ -21,15 +22,12 @@ public class EnemySprawner : MonoBehaviour {
     IEnumerator createSprawner()
     {
 
-        while (!playerController.gameOver)
+        while (!gameManager.gameOver)
         {
-            float sprawnValueX = player.transform.position.x;
-            float sprawnValuey = player.transform.position.y;
-
             yield return new WaitForSeconds(waitTime);
-            sprawnPos = new Vector2(Random.Range(sprawnValueX-8f, sprawnValueX+8f), Random.Range(sprawnValuey-5f, sprawnValuey +5f));
 
-            //Instantiate(enemyPrefab, sprawnPos, gameObject.transform.rotation);
+            getSprawnPos();
+
             GameObject enemy = ObjectPooler.SharedInstance.GetPooledObject();
             if(enemy!=null)
             {
@@ -37,6 +35,21 @@ public class EnemySprawner : MonoBehaviour {
                 enemy.transform.rotation = gameObject.transform.rotation;
                 enemy.SetActive(true);
             }
+        }
+    }
+
+    void getSprawnPos()
+    {
+        float sprawnValueX = player.transform.position.x;
+        float sprawnValuey = player.transform.position.y;
+
+        sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f), 
+                                Random.Range(sprawnValuey - 8f, sprawnValuey + 8f));
+        while (sprawnPos == new Vector2(player.transform.position.x, 
+                                        player.transform.position.y))
+        {
+           sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f), 
+                                   Random.Range(sprawnValuey - 8f, sprawnValuey + 8f));
         }
     }
 }

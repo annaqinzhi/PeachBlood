@@ -5,7 +5,8 @@ using UnityEngine;
 public class ChangeSceneSprawner : MonoBehaviour {
 
     public GameObject changeScenePrefab;
-    public PlayerController playerController;
+    public GameManager gameManager;
+    public GameObject player;
 
     Vector2 sprawnPos;
     float waitTime = 10f;
@@ -19,10 +20,10 @@ public class ChangeSceneSprawner : MonoBehaviour {
 
     IEnumerator createSprawner()
     {
-        while (!playerController.gameOver)
+        while (!gameManager.gameOver)
         {
-            float sprawnValueX = playerController.gameObject.transform.position.x;
-            float sprawnValuey = playerController.gameObject.transform.position.y;
+            float sprawnValueX = player.gameObject.transform.position.x;
+            float sprawnValuey = player.gameObject.transform.position.y;
 
             yield return new WaitForSeconds(waitTime);
             sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f), Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));

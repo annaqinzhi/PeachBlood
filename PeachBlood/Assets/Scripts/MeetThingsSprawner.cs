@@ -5,7 +5,8 @@ using UnityEngine;
 public class MeetThingsSprawner : MonoBehaviour {
 
     public List<GameObject> meetThings;
-    public PlayerController playerController;
+    public GameManager gameManager;
+    public GameObject player;
 
     Vector2 sprawnPos;
     float waitTime = 6f;
@@ -19,10 +20,10 @@ public class MeetThingsSprawner : MonoBehaviour {
 
     IEnumerator createSprawner()
     {
-        while (!playerController.gameOver)
+        while (!gameManager.gameOver)
         {
-            float sprawnValueX = playerController.gameObject.transform.position.x;
-            float sprawnValuey = playerController.gameObject.transform.position.y;
+            float sprawnValueX = player.transform.position.x;
+            float sprawnValuey = player.transform.position.y;
 
             yield return new WaitForSeconds(waitTime);
             sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f), Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));

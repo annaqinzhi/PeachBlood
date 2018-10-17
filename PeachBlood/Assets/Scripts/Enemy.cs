@@ -10,19 +10,19 @@ public class Enemy : MonoBehaviour {
     GameObject player;
     private Vector2 randomDirection;
     private Vector2 moveDirection;
-    private float chractorVelocity=3f;
+    private float chractorVelocity=5f;
     private float directionChangeTime = 5f;
     private float moveLastTime;
  
 
 	void Start () {
         player = GameObject.FindWithTag("Player");
-        float size = Random.Range(0.5f, 1.5f);
+        float size = Random.Range(0.5f, 1.2f);
         transform.localScale = new Vector3(size, size, size);
 
         while (size.Equals(player.transform.localScale.magnitude))
         {
-            size = Random.Range(0.5f, 1.5f);
+            size = Random.Range(0.5f, 1.2f);
             transform.localScale = new Vector3(size, size, size);
         }
 

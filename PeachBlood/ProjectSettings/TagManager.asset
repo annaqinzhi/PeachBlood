@@ -8,6 +8,7 @@ TagManager:
   - BlueMushroom
   - Tree
   - Coint
+  - ChangeScene
   layers:
   - Default
   - TransparentFX

@@ -17,7 +17,8 @@ public class PlayerController : MonoBehaviour {
     public bool directionChosen;
     public GreenTree tree;
     public Text pointsText;
-    public bool gameOver;
+    public GameManager gameManager;
+   
 
     [HideInInspector]
     public List<GameObject> trees = new List<GameObject>();
@@ -139,7 +140,8 @@ public class PlayerController : MonoBehaviour {
                     }
                 } else 
                     {
-                      gameOver = true;
+                      gameManager.gameOver = true;
+                      gameManager.gameOverCanvas.enabled = true;
                       Debug.Log("player is dead! Game over!");
                     }
              }
