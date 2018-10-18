@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour {
     public bool directionChosen;
     public GreenTree tree;
     public Text pointsText;
+    public Text protectedText;
     public GameManager gameManager;
     public AudioClip eatenSound;
     public AudioClip deadSound;
@@ -41,6 +42,7 @@ public class PlayerController : MonoBehaviour {
 
         playerStartPos = rd.position;
         pointsText.text = "0";
+        protectedText.text = "0";
 
         maxLocalscale = new Vector3(1.6f, 1.6f, 1.6f);
         maxLocalscaleMagnitude = maxLocalscale.magnitude;
@@ -113,6 +115,7 @@ public class PlayerController : MonoBehaviour {
         {
             trees.Add(cl.gameObject);
             audioSource.PlayOneShot(eatenSound);
+            addProtectedCounts();
             Debug.Log("treescount is " + trees.Count);
         }
         else if (cl.tag == "ChangeScene")
@@ -133,6 +136,9 @@ public class PlayerController : MonoBehaviour {
                 if(gameObject.transform.localScale.magnitude > maxLocalscaleMagnitude)
                 {
                   gameObject.transform.localScale = new Vector3(1.6f, 1.6f, 1.6f);
+                    gameManager.gameOver = true;
+                    gameManager.winnerCanvas.enabled = true;
+
                 }
             }
 
@@ -143,11 +149,13 @@ public class PlayerController : MonoBehaviour {
                     Destroy(trees[trees.Count-1]);
                     trees.Remove(trees[trees.Count-1]);
                     audioSource.PlayOneShot(eatenSound);
+                    addProtectedCounts();
                     Debug.Log("One tree destroied!");
 
                     if(trees.Count==0)
                     {
                       tree.TreeProtected = false;
+                      addProtectedCounts();
                       Debug.Log("No tree protected!");
                     }
                 } else 
@@ -187,6 +195,11 @@ public class PlayerController : MonoBehaviour {
     {
         point += 1;
         pointsText.text = point.ToString();
+    }
+
+    void addProtectedCounts()
+    {
+        protectedText.text = trees.Count.ToString();
     }
 
 

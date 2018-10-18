@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
 
     public bool gameOver;
     public Canvas gameOverCanvas;
+    public Canvas winnerCanvas;
     public Button Yes;
     public Button No;
 
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour {
 
         gameOver = false;
         gameOverCanvas.enabled = false;
+        winnerCanvas.enabled = false;
     }
 	
 

@@ -64,12 +64,12 @@ public class Enemy : MonoBehaviour {
 
     void getEnemySize()
     {
-        float size = Random.Range(0.5f, 1.2f);
+        float size = Random.Range(0.5f, 1.4f);
         transform.localScale = new Vector3(size, size, size);
 
         while (size.Equals(player.transform.localScale.magnitude))
         {
-            size = Random.Range(0.5f, 1.2f);
+            size = Random.Range(0.5f, 1.4f);
             transform.localScale = new Vector3(size, size, size);
         }
     }
