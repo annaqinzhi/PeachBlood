@@ -6,18 +6,21 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
-    
-    Rigidbody2D rd;
-
+ 
     public Vector2 touchStartPos;
     public Vector2 direction;
     public Vector2 playerStartPos;
     public Vector2 playerNewPos;
-    public float moveSpeed = 3f;
+    public float moveSpeed = 2.5f;
     public bool directionChosen;
     public GreenTree tree;
     public Text pointsText;
     public GameManager gameManager;
+    public AudioClip eatenSound;
+    public AudioClip deadSound;
+
+    private AudioSource audioSource;
+
    
 
     [HideInInspector]
@@ -28,11 +31,14 @@ public class PlayerController : MonoBehaviour {
     Vector3 maxLocalscale;
     float maxLocalscaleMagnitude;
     Color originColor = new Color32(78, 132, 123, 0);
+    Rigidbody2D rd; 
 
 
     void Start () 
     {
         rd = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
+
         playerStartPos = rd.position;
         pointsText.text = "0";
 
@@ -85,6 +91,7 @@ public class PlayerController : MonoBehaviour {
         if (cl.tag =="RedMushroom")
         {
             moveSpeed += 2f;
+            audioSource.PlayOneShot(eatenSound);
             Debug.Log("moveSpeed added!");
             Invoke("returnToOriginalMoveSpeed", 6);
         } 
@@ -92,17 +99,20 @@ public class PlayerController : MonoBehaviour {
         else if (cl.tag =="BlueMushroom")
         {
             gameObject.transform.localScale +=new Vector3(0.8f,0.8f,0.8f) ;
+            audioSource.PlayOneShot(eatenSound);
             Debug.Log("Scale added!");
             Invoke("returnToOriginalScale", 6);
         }
         else if (cl.tag == "Coint")
         {
             addPointsEatenCoint();
+            audioSource.PlayOneShot(eatenSound);
             Debug.Log("Points added!");
         }
         else if (cl.tag == "Tree")
         {
             trees.Add(cl.gameObject);
+            audioSource.PlayOneShot(eatenSound);
             Debug.Log("treescount is " + trees.Count);
         }
         else if (cl.tag == "ChangeScene")
@@ -117,6 +127,7 @@ public class PlayerController : MonoBehaviour {
                 cl.gameObject.SetActive(false);
                 gameObject.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
                 addPointsEatenEnemy();
+                audioSource.PlayOneShot(eatenSound);
                 Debug.Log("smaller has been eaten!");
 
                 if(gameObject.transform.localScale.magnitude > maxLocalscaleMagnitude)
@@ -131,6 +142,7 @@ public class PlayerController : MonoBehaviour {
                 {
                     Destroy(trees[trees.Count-1]);
                     trees.Remove(trees[trees.Count-1]);
+                    audioSource.PlayOneShot(eatenSound);
                     Debug.Log("One tree destroied!");
 
                     if(trees.Count==0)
@@ -142,6 +154,7 @@ public class PlayerController : MonoBehaviour {
                     {
                       gameManager.gameOver = true;
                       gameManager.gameOverCanvas.enabled = true;
+                      audioSource.PlayOneShot(deadSound);
                       Debug.Log("player is dead! Game over!");
                     }
              }

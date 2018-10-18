@@ -21,11 +21,13 @@ public class GameManager : MonoBehaviour {
     public void onPreeYes()
     {
         SceneManager.LoadScene("MainScene");
+        Debug.Log("yes button is pressed.");
     }
 
     public void onPressNo()
     {
         SceneManager.LoadScene("EntryScene");
+        Debug.Log("no button is pressed.");
     }
 
 }

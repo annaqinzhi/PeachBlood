@@ -6,11 +6,19 @@ using UnityEngine.SceneManagement;
 
 public class EntryScene : MonoBehaviour {
 
-    //public Canvas startCanvas;
+    public AudioClip playSound;
     public Button play;
-   
+
+    private AudioSource audioSource;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     public void onPreePlay()
     {
         SceneManager.LoadScene("MainScene");
+        audioSource.PlayOneShot(playSound);
     }
 }

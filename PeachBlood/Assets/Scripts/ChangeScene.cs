@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class ChangeScene : MonoBehaviour {
 
+    public AudioClip eatenSound;
+
+    private AudioSource audioSource;
+
     ParticleSystem particle;
-    Color newColor = new Color32(120, 200, 187, 0);
+    Color newColor = new Color32(103, 118, 115, 0);
 
     private void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         particle = GetComponent<ParticleSystem>();
         particle.Stop();
     }
@@ -18,6 +23,7 @@ public class ChangeScene : MonoBehaviour {
         if (cl.gameObject.name == "Player")
         {
             particle.Play();
+            audioSource.PlayOneShot(eatenSound);
 
             Invoke("destroyObject", 0.5f);
 

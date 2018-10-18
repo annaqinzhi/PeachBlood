@@ -16,6 +16,7 @@ public class EnemySprawner : MonoBehaviour {
 	void Start () {
 
         StartCoroutine(createSprawner());
+        player = GameObject.FindWithTag("Player");
 	}
 
 
@@ -44,12 +45,12 @@ public class EnemySprawner : MonoBehaviour {
         float sprawnValuey = player.transform.position.y;
 
         sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f), 
-                                Random.Range(sprawnValuey - 8f, sprawnValuey + 8f));
+                                Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));
         while (sprawnPos == new Vector2(player.transform.position.x, 
                                         player.transform.position.y))
         {
            sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f), 
-                                   Random.Range(sprawnValuey - 8f, sprawnValuey + 8f));
+                                   Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));
         }
     }
 }
