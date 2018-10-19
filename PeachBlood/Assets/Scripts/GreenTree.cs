@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class GreenTree : MonoBehaviour {
 
-    public bool TreeProtected;
+     
     public float allowDistance = 1.5f;
 
     GameObject player;
+    bool TreeProtected;
 
-  
     private void OnTriggerEnter2D(Collider2D cl)
     {
         if (cl.gameObject == GameObject.FindWithTag("Player"))

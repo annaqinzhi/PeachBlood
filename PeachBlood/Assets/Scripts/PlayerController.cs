@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour {
     public Vector2 playerNewPos;
     public float moveSpeed = 2.5f;
     public bool directionChosen;
-    public GreenTree tree;
     public Text pointsText;
     public Text protectedText;
     public GameManager gameManager;
@@ -21,6 +20,7 @@ public class PlayerController : MonoBehaviour {
     public AudioClip deadSound;
 
     private AudioSource audioSource;
+    private bool hasTreeProtected;
 
    
 
@@ -113,6 +113,7 @@ public class PlayerController : MonoBehaviour {
         }
         else if (cl.tag == "Tree")
         {
+            hasTreeProtected = true;
             trees.Add(cl.gameObject);
             audioSource.PlayOneShot(eatenSound);
             addProtectedCounts();
@@ -135,7 +136,7 @@ public class PlayerController : MonoBehaviour {
 
                 if(gameObject.transform.localScale.magnitude > maxLocalscaleMagnitude)
                 {
-                  gameObject.transform.localScale = new Vector3(1.6f, 1.6f, 1.6f);
+                  gameObject.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
                     gameManager.gameOver = true;
                     gameManager.winnerCanvas.enabled = true;
 
@@ -144,7 +145,7 @@ public class PlayerController : MonoBehaviour {
 
             if (cl.gameObject.GetComponent<Transform>().localScale.magnitude
                               > gameObject.transform.localScale.magnitude)
-            { if(tree.TreeProtected)
+            { if(hasTreeProtected)
                 {
                     Destroy(trees[trees.Count-1]);
                     trees.Remove(trees[trees.Count-1]);
@@ -154,7 +155,7 @@ public class PlayerController : MonoBehaviour {
 
                     if(trees.Count==0)
                     {
-                      tree.TreeProtected = false;
+                        hasTreeProtected = false;
                       addProtectedCounts();
                       Debug.Log("No tree protected!");
                     }
