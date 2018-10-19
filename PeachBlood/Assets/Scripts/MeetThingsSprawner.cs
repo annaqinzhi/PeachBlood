@@ -22,14 +22,26 @@ public class MeetThingsSprawner : MonoBehaviour {
     {
         while (!gameManager.gameOver)
         {
-            float sprawnValueX = player.transform.position.x;
-            float sprawnValuey = player.transform.position.y;
-
             yield return new WaitForSeconds(waitTime);
-            sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f), 
-                                    Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));
+
+            getSprawnPos();
             int index = Random.Range(0, 3);
             Instantiate(meetThings[index], sprawnPos, gameObject.transform.rotation);
+        }
+    }
+
+    void getSprawnPos()
+    {
+        float sprawnValueX = player.transform.position.x;
+        float sprawnValuey = player.transform.position.y;
+
+        sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f),
+                                Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));
+        while (sprawnPos == new Vector2(player.transform.position.x,
+                                        player.transform.position.y))
+        {
+            sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f),
+                                    Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));
         }
     }
 }

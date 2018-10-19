@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour {
         pointsText.text = "0";
         protectedText.text = "0";
 
-        maxLocalscale = new Vector3(1.6f, 1.6f, 1.6f);
+        maxLocalscale = new Vector3(2.0f, 2.0f, 2.0f);
         maxLocalscaleMagnitude = maxLocalscale.magnitude;
      
 	}
@@ -136,7 +136,7 @@ public class PlayerController : MonoBehaviour {
 
                 if(gameObject.transform.localScale.magnitude > maxLocalscaleMagnitude)
                 {
-                  gameObject.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
+                    gameObject.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
                     gameManager.gameOver = true;
                     gameManager.winnerCanvas.enabled = true;
 

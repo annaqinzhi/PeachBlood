@@ -22,12 +22,25 @@ public class ChangeSceneSprawner : MonoBehaviour {
     {
         while (!gameManager.gameOver)
         {
-            float sprawnValueX = player.gameObject.transform.position.x;
-            float sprawnValuey = player.gameObject.transform.position.y;
-
             yield return new WaitForSeconds(waitTime);
-            sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f), Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));
+
+            getSprawnPos();
             Instantiate(changeScenePrefab, sprawnPos, gameObject.transform.rotation);
+        }
+    }
+
+    void getSprawnPos()
+    {
+        float sprawnValueX = player.transform.position.x;
+        float sprawnValuey = player.transform.position.y;
+
+        sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f),
+                                Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));
+        while (sprawnPos == new Vector2(player.transform.position.x,
+                                        player.transform.position.y))
+        {
+            sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f),
+                                    Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));
         }
     }
 }
