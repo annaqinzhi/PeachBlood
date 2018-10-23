@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 
 public class PlayerController : MonoBehaviour {
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour {
 
     private AudioSource audioSource;
     private bool hasTreeProtected;
+    private string objTag;
 
    
 
@@ -31,7 +33,7 @@ public class PlayerController : MonoBehaviour {
     static int point = 0;
     Vector3 maxLocalscale;
     float maxLocalscaleMagnitude;
-    Color originColor = new Color32(78, 132, 123, 0);
+   
     Rigidbody2D rd; 
 
 
@@ -83,14 +85,18 @@ public class PlayerController : MonoBehaviour {
         {
             playerNewPos = playerStartPos + direction.normalized * moveSpeed * Time.fixedDeltaTime;
             rd.position = playerNewPos;
+           
             playerStartPos = rd.position;
+
         } 
 
     }
 
-    private void OnTriggerEnter2D(Collider2D cl)
+    private void OnCollisionEnter2D(Collision2D cl)
     {
-        if (cl.tag =="RedMushroom")
+        objTag = cl.gameObject.tag;
+
+        if (objTag =="RedMushroom")
         {
             moveSpeed += 2f;
             audioSource.PlayOneShot(eatenSound);
@@ -98,20 +104,20 @@ public class PlayerController : MonoBehaviour {
             Invoke("returnToOriginalMoveSpeed", 6);
         } 
 
-        else if (cl.tag =="BlueMushroom")
+        else if (objTag == "BlueMushroom")
         {
             gameObject.transform.localScale +=new Vector3(0.8f,0.8f,0.8f) ;
             audioSource.PlayOneShot(eatenSound);
             Debug.Log("Scale added!");
             Invoke("returnToOriginalScale", 6);
         }
-        else if (cl.tag == "Coint")
+        else if (objTag == "Coint")
         {
             addPointsEatenCoint();
             audioSource.PlayOneShot(eatenSound);
             Debug.Log("Points added!");
         }
-        else if (cl.tag == "Tree")
+        else if (objTag == "Tree")
         {
             hasTreeProtected = true;
             trees.Add(cl.gameObject);
@@ -119,9 +125,9 @@ public class PlayerController : MonoBehaviour {
             addProtectedCounts();
             Debug.Log("treescount is " + trees.Count);
         }
-        else if (cl.tag == "ChangeScene")
+        else if (objTag == "ChangeScene")
         {
-            Invoke("changeColorBack", 5f);
+            Invoke("changeSceneBack", 5f);
         }
         else if (cl.gameObject.GetComponent<SpriteRenderer>().sprite==gameObject.GetComponent<SpriteRenderer>().sprite)
         {
@@ -176,15 +182,18 @@ public class PlayerController : MonoBehaviour {
         gameObject.transform.localScale -= new Vector3(0.8f, 0.8f, 0.8f);
     }
 
+
     void returnToOriginalMoveSpeed()
     {
         moveSpeed -= 2f;
     }
 
-    void changeColorBack()
+
+    void changeSceneBack()
     {
-        Camera.main.backgroundColor = originColor;
+        SceneManager.LoadScene("MainScene");
     }
+
 
     void addPointsEatenCoint()
     {
@@ -192,11 +201,13 @@ public class PlayerController : MonoBehaviour {
         pointsText.text = point.ToString();
     }
 
+
     void addPointsEatenEnemy()
     {
         point += 1;
         pointsText.text = point.ToString();
     }
+
 
     void addProtectedCounts()
     {

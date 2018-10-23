@@ -30,6 +30,7 @@ public class EnemySprawner : MonoBehaviour {
             getSprawnPos();
 
             GameObject enemy = ObjectPooler.SharedInstance.GetPooledObject();
+
             if(enemy!=null)
             {
                 enemy.transform.position = sprawnPos;

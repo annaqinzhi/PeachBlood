@@ -10,9 +10,9 @@ public class GreenTree : MonoBehaviour {
     GameObject player;
     bool TreeProtected;
 
-    private void OnTriggerEnter2D(Collider2D cl)
+    private void OnCollisionEnter2D(Collision2D cl)
     {
-        if (cl.gameObject == GameObject.FindWithTag("Player"))
+        if (cl.gameObject.name == "Player")
         {
             player = cl.gameObject;
             TreeProtected = true;

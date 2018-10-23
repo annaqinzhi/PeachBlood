@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ChangeScene : MonoBehaviour {
 
@@ -9,7 +10,6 @@ public class ChangeScene : MonoBehaviour {
     private AudioSource audioSource;
 
     ParticleSystem particle;
-    Color newColor = new Color32(103, 118, 115, 0);
 
     private void Start()
     {
@@ -18,23 +18,23 @@ public class ChangeScene : MonoBehaviour {
         particle.Stop();
     }
 
-    private void OnTriggerEnter2D(Collider2D cl)
+    private void OnCollisionEnter2D(Collision2D cl)
     {
         if (cl.gameObject.name == "Player")
         {
             particle.Play();
             audioSource.PlayOneShot(eatenSound);
 
-            Invoke("destroyObject", 0.5f);
+            Invoke("changeScene", 0.5f);
 
             Debug.Log("Scene is changed!");
         }
     }
 
-    void destroyObject()
+    void changeScene()
     {
         particle.Stop();
-        Camera.main.backgroundColor = newColor;
+        SceneManager.LoadScene("DangerScene");
         Destroy(gameObject);
     }
 
