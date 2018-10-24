@@ -14,7 +14,7 @@ public class ChangeScene : MonoBehaviour {
     private void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        particle = GetComponent<ParticleSystem>();
+        particle = GetComponentInChildren<ParticleSystem>();
         particle.Stop();
     }
 

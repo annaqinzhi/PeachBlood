@@ -12,13 +12,14 @@ public class GameManager : MonoBehaviour {
     public Button Yes;
     public Button No;
 
+
     void Start () {
 
         gameOver = false;
         gameOverCanvas.enabled = false;
         winnerCanvas.enabled = false;
+
     }
-	
 
     public void onPreeYes()
     {
