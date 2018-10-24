@@ -20,7 +20,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4479291459601482}
   - component: {fileID: 212877761684461124}
-  - component: {fileID: 114594798883494754}
   m_Layer: 8
   m_Name: Bmg1
   m_TagString: Untagged
@@ -41,20 +40,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114594798883494754
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1172821235695038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51eee2f3e34734d27bc72386f945e5f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  horizontalLength: 8
-  verticalLength: 13
-  player: {fileID: 0}
 --- !u!212 &212877761684461124
 SpriteRenderer:
   m_ObjectHideFlags: 1

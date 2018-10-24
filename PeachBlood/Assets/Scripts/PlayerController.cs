@@ -92,16 +92,16 @@ public class PlayerController : MonoBehaviour {
 
     }
 
-    private void OnCollisionEnter2D(Collision2D cl)
+    private void OnTriggerEnter2D(Collider2D cl)
     {
         objTag = cl.gameObject.tag;
 
-        if (objTag =="RedMushroom")
+        if (objTag == "RedMushroom")
         {
             moveSpeed += 2f;
             audioSource.PlayOneShot(eatenSound);
             Debug.Log("moveSpeed added!");
-            Invoke("returnToOriginalMoveSpeed", 6);
+            Invoke("returnToOriginalMoveSpeed", 6f);
         } 
 
         else if (objTag == "BlueMushroom")
@@ -109,7 +109,7 @@ public class PlayerController : MonoBehaviour {
             gameObject.transform.localScale +=new Vector3(0.8f,0.8f,0.8f) ;
             audioSource.PlayOneShot(eatenSound);
             Debug.Log("Scale added!");
-            Invoke("returnToOriginalScale", 6);
+            Invoke("returnToOriginalScale", 6f);
         }
         else if (objTag == "Coint")
         {
@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour {
         }
         else if (objTag == "ChangeScene")
         {
-            Invoke("changeSceneBack", 5f);
+            Invoke("changeSceneBack", 3f);
         }
         else if (cl.gameObject.GetComponent<SpriteRenderer>().sprite==gameObject.GetComponent<SpriteRenderer>().sprite)
         {
@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviour {
 
                     if(trees.Count==0)
                     {
-                        hasTreeProtected = false;
+                      hasTreeProtected = false;
                       addProtectedCounts();
                       Debug.Log("No tree protected!");
                     }

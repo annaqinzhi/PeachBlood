@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour {
     GameObject player;
     private Vector2 randomDirection;
     private Vector2 moveDirection;
-    private float chractorVelocity = 2f;
+    private float chractorVelocity = 1f;
     private float directionChangeTime = 5f;
     private float moveLastTime;
     private float moveSpeed=1.3f;
@@ -45,7 +45,7 @@ public class Enemy : MonoBehaviour {
 
     }
 
-    private void OnCollisionEnter(Collision cl)
+    private void OnTringerEnter2D(Collider2D cl)
     {
         objTag = cl.gameObject.name;
         if(objTag=="Enemy")
@@ -91,7 +91,6 @@ public class Enemy : MonoBehaviour {
             {
                 rd.position =
                      Vector2.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
-                Debug.Log("big enemy followed");
             }
         }
     }

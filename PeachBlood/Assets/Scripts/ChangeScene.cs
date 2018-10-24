@@ -18,7 +18,7 @@ public class ChangeScene : MonoBehaviour {
         particle.Stop();
     }
 
-    private void OnCollisionEnter2D(Collision2D cl)
+    private void OnTriggerEnter2D(Collider2D cl)
     {
         if (cl.gameObject.name == "Player")
         {

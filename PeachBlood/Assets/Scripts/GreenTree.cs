@@ -10,7 +10,7 @@ public class GreenTree : MonoBehaviour {
     GameObject player;
     bool TreeProtected;
 
-    private void OnCollisionEnter2D(Collision2D cl)
+    private void OnTriggerEnter2D(Collider2D cl)
     {
         if (cl.gameObject.name == "Player")
         {
