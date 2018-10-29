@@ -43,6 +43,9 @@ public class GameManager : MonoBehaviour {
 
     public void onPressNo()
     {
+        PlayerSingleton.point = 0;
+        PlayerSingleton.protectedPoint = 0;
+        Destroy(PlayerSingleton.Instance);
         SceneManager.LoadScene("EntryScene");
         Debug.Log("no button is pressed.");
     }
