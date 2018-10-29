@@ -5,18 +5,15 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-public class PlayerController : MonoBehaviour {
+public class PlayerSingleton : MonoBehaviour {
 
- 
     public Vector2 touchStartPos;
     public Vector2 direction;
     public Vector2 playerStartPos;
     public Vector2 playerNewPos;
     public float moveSpeed = 2.5f;
     public bool directionChosen;
-    public Text pointsText;
-    public Text protectedText;
-    public GameManager gameManager;
+
     public AudioClip eatenSound;
     public AudioClip deadSound;
 
@@ -24,38 +21,76 @@ public class PlayerController : MonoBehaviour {
     private bool hasTreeProtected;
     private string objTag;
 
-   
+    public static int point = 0;
+    public static int protectedPoint = 0;
+
+
 
     [HideInInspector]
     public List<GameObject> trees = new List<GameObject>();
 
+    [HideInInspector]
+    public GameManager gameManager;
 
-    static int point = 0;
+
     Vector3 maxLocalscale;
     float maxLocalscaleMagnitude;
-   
-    Rigidbody2D rd; 
 
 
-    void Start () 
+    Rigidbody2D rd;
+
+
+
+    private static PlayerSingleton _instance;
+
+    public static PlayerSingleton Instance
     {
-        rd = GetComponent<Rigidbody2D>();
+        get
+        {
+
+            if (_instance == null)
+            {
+                _instance = Instantiate(Resources.Load<GameObject>("Player")).GetComponent<PlayerSingleton>();
+            }
+
+            return _instance;
+        }
+    }
+
+    private void Awake()
+    {
+
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+
+        }
+
+        else
+        {
+            _instance = this;
+           // DontDestroyOnLoad(gameObject);
+        }
+    }
+
+
+    void Start()
+    {
+        rd = gameObject.GetComponent<Rigidbody2D>();
         audioSource = GetComponent<AudioSource>();
 
         playerStartPos = rd.position;
-        pointsText.text = "0";
-        protectedText.text = "0";
 
         maxLocalscale = new Vector3(2.0f, 2.0f, 2.0f);
         maxLocalscaleMagnitude = maxLocalscale.magnitude;
-     
-	}
-	
-	
-	void Update () 
+
+    }
+
+
+    void Update()
     {
-     
-        if(Input.touchCount>0)
+
+        if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
 
@@ -67,7 +102,7 @@ public class PlayerController : MonoBehaviour {
                     break;
 
                 case TouchPhase.Moved:
-                    direction = touch.position-touchStartPos;
+                    direction = touch.position - touchStartPos;
                     directionChosen = true;
                     break;
 
@@ -77,22 +112,16 @@ public class PlayerController : MonoBehaviour {
             }
         }
 
-	}
-
-    private void FixedUpdate()
-    {
         if (directionChosen)
         {
-            playerNewPos = playerStartPos + direction.normalized * moveSpeed * Time.fixedDeltaTime;
-            rd.position = playerNewPos;
-           
-            playerStartPos = rd.position;
+            movePlayer();
 
-        } 
+        }
 
     }
 
-    private void OnTriggerEnter2D(Collider2D cl)
+
+    public void OnTriggerEnter2D(Collider2D cl)
     {
         objTag = cl.gameObject.tag;
 
@@ -102,11 +131,11 @@ public class PlayerController : MonoBehaviour {
             audioSource.PlayOneShot(eatenSound);
             Debug.Log("moveSpeed added!");
             Invoke("returnToOriginalMoveSpeed", 6f);
-        } 
+        }
 
         else if (objTag == "BlueMushroom")
         {
-            gameObject.transform.localScale +=new Vector3(0.8f,0.8f,0.8f) ;
+            gameObject.transform.localScale += new Vector3(0.8f, 0.8f, 0.8f);
             audioSource.PlayOneShot(eatenSound);
             Debug.Log("Scale added!");
             Invoke("returnToOriginalScale", 6f);
@@ -115,6 +144,7 @@ public class PlayerController : MonoBehaviour {
         {
             addPointsEatenCoint();
             audioSource.PlayOneShot(eatenSound);
+            gameManager.getPoints();
             Debug.Log("Points added!");
         }
         else if (objTag == "Tree")
@@ -123,56 +153,69 @@ public class PlayerController : MonoBehaviour {
             trees.Add(cl.gameObject);
             audioSource.PlayOneShot(eatenSound);
             addProtectedCounts();
+            gameManager.getPoints();
             Debug.Log("treescount is " + trees.Count);
         }
-        else if (objTag == "ChangeScene")
+
+        else if (objTag == "Cliff")
         {
-            Invoke("changeSceneBack", 3f);
+            gameManager.gameEnding();
+            audioSource.PlayOneShot(deadSound);
+            Destroy(gameObject);
+            Debug.Log("player falling down in kaj! Game over!");
         }
-        else if (cl.gameObject.GetComponent<SpriteRenderer>().sprite==gameObject.GetComponent<SpriteRenderer>().sprite)
+
+        else if (cl.gameObject.GetComponent<SpriteRenderer>().sprite == gameObject.GetComponent<SpriteRenderer>().sprite)
         {
-            if(cl.gameObject.GetComponent<Transform>().localScale.magnitude
+            if (cl.gameObject.GetComponent<Transform>().localScale.magnitude
                                 < gameObject.transform.localScale.magnitude)
             {
                 cl.gameObject.SetActive(false);
                 gameObject.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
                 addPointsEatenEnemy();
+                gameManager.getPoints();
                 audioSource.PlayOneShot(eatenSound);
                 Debug.Log("smaller has been eaten!");
 
-                if(gameObject.transform.localScale.magnitude > maxLocalscaleMagnitude)
+                if (gameObject.transform.localScale.magnitude > maxLocalscaleMagnitude)
                 {
                     gameObject.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-                    gameManager.gameOver = true;
-                    gameManager.winnerCanvas.enabled = true;
+                    gameManager.gameEnding();
+
 
                 }
+
             }
 
             if (cl.gameObject.GetComponent<Transform>().localScale.magnitude
-                              > gameObject.transform.localScale.magnitude)
-            { if(hasTreeProtected)
+                > gameObject.transform.localScale.magnitude)
+            {
+                if (hasTreeProtected)
                 {
-                    Destroy(trees[trees.Count-1]);
-                    trees.Remove(trees[trees.Count-1]);
+                    Destroy(trees[trees.Count - 1]);
+                    trees.Remove(trees[trees.Count - 1]);
                     audioSource.PlayOneShot(eatenSound);
-                    addProtectedCounts();
+                    minusProtectedCounts();
+                    gameManager.getPoints();
                     Debug.Log("One tree destroied!");
 
-                    if(trees.Count==0)
+                    if (trees.Count == 0)
                     {
-                      hasTreeProtected = false;
-                      addProtectedCounts();
-                      Debug.Log("No tree protected!");
+                        hasTreeProtected = false;
+                        Debug.Log("No tree protected!");
                     }
-                } else 
+                }
+                else
+                {
+                    audioSource.PlayOneShot(deadSound);
+                    if (gameManager != null)
                     {
-                      gameManager.gameOver = true;
-                      gameManager.gameOverCanvas.enabled = true;
-                      audioSource.PlayOneShot(deadSound);
-                      Debug.Log("player is dead! Game over!");
+                        gameManager.gameEnding();
                     }
-             }
+
+                    Debug.Log("player is dead! Game over!");
+                }
+            }
         }
 
     }
@@ -188,30 +231,35 @@ public class PlayerController : MonoBehaviour {
         moveSpeed -= 2f;
     }
 
-
-    void changeSceneBack()
+    public void addProtectedCounts()
     {
-        SceneManager.LoadScene("MainScene");
+        protectedPoint++;
+    }
+
+    public void minusProtectedCounts()
+    {
+        protectedPoint--;
     }
 
 
-    void addPointsEatenCoint()
+    public void addPointsEatenCoint()
     {
         point += 5;
-        pointsText.text = point.ToString();
     }
 
 
-    void addPointsEatenEnemy()
+    public void addPointsEatenEnemy()
     {
         point += 1;
-        pointsText.text = point.ToString();
+
     }
 
+    void movePlayer()
+    { 
+      playerNewPos = playerStartPos + direction.normalized * moveSpeed * Time.deltaTime;  
+      rd.position = playerNewPos;
+      playerStartPos = rd.position;
 
-    void addProtectedCounts()
-    {
-        protectedText.text = trees.Count.ToString();
     }
 
 

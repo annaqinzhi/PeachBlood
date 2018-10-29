@@ -10,6 +10,9 @@ TagManager:
   - Coint
   - ChangeScene
   - Enemy
+  - Wall
+  - Kaj
+  - Cliff
   layers:
   - Default
   - TransparentFX

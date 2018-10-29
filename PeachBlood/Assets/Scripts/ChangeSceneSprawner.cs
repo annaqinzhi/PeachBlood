@@ -6,7 +6,6 @@ public class ChangeSceneSprawner : MonoBehaviour {
 
     public GameObject changeScenePrefab;
     public GameManager gameManager;
-    public GameObject player;
 
     Vector2 sprawnPos;
     float waitTime = 10f;
@@ -31,13 +30,13 @@ public class ChangeSceneSprawner : MonoBehaviour {
 
     void getSprawnPos()
     {
-        float sprawnValueX = player.transform.position.x;
-        float sprawnValuey = player.transform.position.y;
+        float sprawnValueX = PlayerSingleton.Instance.transform.position.x;
+        float sprawnValuey = PlayerSingleton.Instance.transform.position.y;
 
         sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f),
                                 Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));
-        while (sprawnPos == new Vector2(player.transform.position.x,
-                                        player.transform.position.y))
+        while (sprawnPos == new Vector2(PlayerSingleton.Instance.transform.position.x,
+                                        PlayerSingleton.Instance.transform.position.y))
         {
             sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f),
                                     Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));

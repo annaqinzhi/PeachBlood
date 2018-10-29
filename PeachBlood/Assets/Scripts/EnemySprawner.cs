@@ -6,17 +6,15 @@ public class EnemySprawner : MonoBehaviour {
 
     public GameObject enemyPrefab;
     public GameManager gameManager;
-    public GameObject player;
     public float waitTime = 3f;
 
     Vector2 sprawnPos;
-   
 
 
-	void Start () {
+
+    void Start () {
 
         StartCoroutine(createSprawner());
-        player = GameObject.FindWithTag("Player");
 	}
 
 
@@ -42,13 +40,13 @@ public class EnemySprawner : MonoBehaviour {
 
     void getSprawnPos()
     {
-        float sprawnValueX = player.transform.position.x;
-        float sprawnValuey = player.transform.position.y;
+        float sprawnValueX = PlayerSingleton.Instance.transform.position.x;
+        float sprawnValuey = PlayerSingleton.Instance.transform.position.y;
 
         sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f), 
                                 Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));
-        while (sprawnPos == new Vector2(player.transform.position.x, 
-                                        player.transform.position.y))
+        while (sprawnPos == new Vector2(PlayerSingleton.Instance.transform.position.x,
+                                        PlayerSingleton.Instance.transform.position.y))
         {
            sprawnPos = new Vector2(Random.Range(sprawnValueX - 8f, sprawnValueX + 8f), 
                                    Random.Range(sprawnValuey - 5f, sprawnValuey + 5f));

@@ -6,7 +6,9 @@ public class Enemy : MonoBehaviour {
 
     public float dangerousDistance = 5f;
 
-    GameObject player;
+    [HideInInspector]
+    public GameManager gameManager;
+
     private Vector2 randomDirection;
     private Vector2 moveDirection;
     private float chractorVelocity = 1f;
@@ -22,12 +24,12 @@ public class Enemy : MonoBehaviour {
 	void Start () {
 
         rd = GetComponent<Rigidbody2D>();
-        player = GameObject.FindWithTag("Player");
 
         getEnemySize();
 
         moveLastTime = 0f;
         changeMoveDirection();
+  
 
 	}
 
@@ -76,7 +78,7 @@ public class Enemy : MonoBehaviour {
         float size = Random.Range(0.5f, 1.4f);
         transform.localScale = new Vector3(size, size, size);
 
-        while (size.Equals(player.transform.localScale.magnitude))
+        while (size.Equals(PlayerSingleton.Instance.transform.localScale.magnitude))
         {
             size = Random.Range(0.5f, 1.4f);
             transform.localScale = new Vector3(size, size, size);
@@ -85,12 +87,12 @@ public class Enemy : MonoBehaviour {
 
     void BigEnemyFollowPlayer()
     {
-        if (transform.localScale.magnitude > player.transform.localScale.magnitude)
+        if (transform.localScale.magnitude > PlayerSingleton.Instance.transform.transform.localScale.magnitude)
         {
-            if (Vector2.Distance(transform.position, player.transform.position) < dangerousDistance)
+            if (Vector2.Distance(transform.position, PlayerSingleton.Instance.transform.transform.position) < dangerousDistance)
             {
                 rd.position =
-                     Vector2.MoveTowards(transform.position, player.transform.position, moveSpeed * Time.deltaTime);
+                      Vector2.MoveTowards(transform.position, PlayerSingleton.Instance.transform.transform.position, moveSpeed * Time.deltaTime);
             }
         }
     }

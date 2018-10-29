@@ -7,14 +7,19 @@ public class GreenTree : MonoBehaviour {
      
     public float allowDistance = 1.5f;
 
-    GameObject player;
     bool TreeProtected;
+    private GameObject player;
+
+    private void Start()
+    {
+        player = PlayerSingleton.Instance.gameObject;
+    }
+
 
     private void OnTriggerEnter2D(Collider2D cl)
     {
-        if (cl.gameObject.name == "Player")
+        if (cl.gameObject == player)
         {
-            player = cl.gameObject;
             TreeProtected = true;
             Debug.Log("Tree has been eaten!");
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
