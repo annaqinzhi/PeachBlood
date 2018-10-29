@@ -29,13 +29,14 @@ public class ChangeScene : MonoBehaviour {
         {
             particle.Play();
             audioSource.PlayOneShot(eatenSound);
-            changeScene();
+            Invoke("changeScene", 0.5f);
             Debug.Log("Scene is changed!");
         }
     }
 
     void changeScene()
     {
+        particle.Stop();
         if (SceneManager.GetActiveScene().name == "MainScene")
         {
             SceneManager.LoadScene("DangerScene");
