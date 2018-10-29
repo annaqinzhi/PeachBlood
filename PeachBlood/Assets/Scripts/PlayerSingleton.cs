@@ -89,35 +89,37 @@ public class PlayerSingleton : MonoBehaviour {
 
     void Update()
     {
-
-        if (Input.touchCount > 0)
+        if (!gameManager.gameOver)
         {
-            Touch touch = Input.GetTouch(0);
-
-            switch (touch.phase)
+            if (Input.touchCount > 0)
             {
-                case TouchPhase.Began:
-                    touchStartPos = touch.position;
-                    directionChosen = false;
-                    break;
+                Touch touch = Input.GetTouch(0);
 
-                case TouchPhase.Moved:
-                    direction = touch.position - touchStartPos;
-                    directionChosen = true;
-                    break;
+                switch (touch.phase)
+                {
+                    case TouchPhase.Began:
+                        touchStartPos = touch.position;
+                        directionChosen = false;
+                        break;
 
-                case TouchPhase.Ended:
-                    directionChosen = false;
-                    break;
+                    case TouchPhase.Moved:
+                        direction = touch.position - touchStartPos;
+                        directionChosen = true;
+                        break;
+
+                    case TouchPhase.Ended:
+                        directionChosen = false;
+                        break;
+                }
             }
+
+            if (directionChosen)
+            {
+                movePlayer();
+
+            }
+
         }
-
-        if (directionChosen)
-        {
-            movePlayer();
-
-        }
-
     }
 
 
@@ -159,10 +161,9 @@ public class PlayerSingleton : MonoBehaviour {
 
         else if (objTag == "Cliff")
         {
-            gameManager.gameEnding();
             audioSource.PlayOneShot(deadSound);
-            Destroy(gameObject);
             Debug.Log("player falling down in kaj! Game over!");
+            gameManager.gameEnding();
         }
 
         else if (cl.gameObject.GetComponent<SpriteRenderer>().sprite == gameObject.GetComponent<SpriteRenderer>().sprite)
