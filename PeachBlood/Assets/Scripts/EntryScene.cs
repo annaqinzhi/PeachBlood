@@ -19,7 +19,6 @@ public class EntryScene : MonoBehaviour {
     public void onPreePlay()
     {
         SceneManager.LoadScene("MainScene");
-        Destroy(PlayerSingleton.Instance);
         audioSource.PlayOneShot(playSound);
     }
 }

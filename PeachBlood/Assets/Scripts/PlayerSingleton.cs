@@ -60,16 +60,16 @@ public class PlayerSingleton : MonoBehaviour {
     private void Awake()
     {
 
-        if (_instance != null && _instance != this)
+        if (_instance != null && this != _instance)
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
 
         }
 
         else
         {
             _instance = this;
-           // DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(this);
         }
     }
 
