@@ -63,5 +63,9 @@ public class GameManager : MonoBehaviour {
         protectedText.text = PlayerSingleton.protectedPoint.ToString();
     }
 
-
+    public void winnerEnding()
+    {
+        gameOver = true;
+        winnerCanvas.enabled = true;
+    }
 }

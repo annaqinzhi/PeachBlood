@@ -181,7 +181,7 @@ public class PlayerSingleton : MonoBehaviour {
                 if (gameObject.transform.localScale.magnitude > maxLocalscaleMagnitude)
                 {
                     gameObject.transform.localScale = new Vector3(2.0f, 2.0f, 2.0f);
-                    gameManager.gameEnding();
+                    gameManager.winnerEnding();
 
 
                 }
